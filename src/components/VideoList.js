@@ -1,10 +1,40 @@
 import React from 'react';
 import VideoListEntry from './VideoListEntry.js';
+import {connect} from 'react-redux';
 
-var VideoList = ({videos, handleVideoListEntryTitleClick}) => (
+const mapStateToProps = (state) => {
+  return {
+    videos: state.reducer.videoList
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    videoClick : (data) => dispatch(handleVideoListEntryTitleClick(data))
+  }
+};
+
+
+const handleVideoListEntryTitleClick = (videoData) => {
+  return {
+    type : 'VIDEO_CLICK',
+    payload: videoData
+  }
+  //video that is clicked becomes state.reducer.currentVideo
+};
+
+
+
+
+var VideoList = () => {
+  handleClick () {
+    
+  }
+
+  return (
   <div className="video-list">
     {
-      videos.map(video => (
+      this.props.videos.map(video => (
         <VideoListEntry
           key={video.etag}
           video={video}
@@ -13,10 +43,10 @@ var VideoList = ({videos, handleVideoListEntryTitleClick}) => (
       ))
     }
   </div>
-);
+)};
 
 VideoList.propTypes = {
   videos: React.PropTypes.array.isRequired
 };
 
-export default VideoList;
+export default connect(mapStateToProps, mapDispatchToProps)(VideoList);
